@@ -1,8 +1,6 @@
-# http://www.faqs.org/rfcs/rfc3164.html
-
 describe "a syslog packet" do
   
-  @p = Syslog::Packet.new
+  @p = SyslogProto::Packet.new
   
   it "should embarrass a person who does not set the fields" do
     @p.to_s.should.equal "I AM A JUNK PACKET CUZ MY USER DIDNT SET ME"

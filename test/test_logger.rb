@@ -1,11 +1,11 @@
 describe "syslog logger" do
   
   it "create a new logger with hostname and facility" do
-    lambda {@logger = Syslog::Logger.new("space_station", "local0")}.should.not.raise
+    lambda {@logger = SyslogProto::Logger.new("space_station", "local0")}.should.not.raise
   end
   
   it "hostname and facility must conform to the requirements of a Packet" do
-    lambda {Syslog::Logger.new("space station", "some shit")}.should.raise ArgumentError
+    lambda {SyslogProto::Logger.new("space station", "some shit")}.should.raise ArgumentError
   end
   
   it "generates packets" do
