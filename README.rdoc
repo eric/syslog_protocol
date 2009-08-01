@@ -49,6 +49,18 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
  p.msg
  # => "space is really getting to me"
 
+=== It yells at you for trying to abuse the protocol
+
+ p = SyslogProto::Packet.new
+ p.facility = 34534534
+ # => ArgumentError: Facility must be within 0-23
+ p.hostname = "my host"
+ # => ArgumentError: Hostname may not contain spaces
+ p.hostname = "h\000stname"
+ # => ArgumentError: Hostname may only contain ASCII characters 33-126
+ # ...etc.
+ # It will also unintelligently truncate messages > 1024 bytes so beware.
+
 == Caveats
 
 Syslog is a terrible and loosely defined protocol. Many devices and programs do not
