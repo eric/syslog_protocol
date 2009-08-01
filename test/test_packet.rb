@@ -78,9 +78,9 @@ describe "a syslog packet" do
     @p.to_s.should.equal "<165>#{timestamp} space_station exploring ze black hole"
   end
   
-  it "entire packet may not be larger than 1024 bytes" do
+  it "packets larger than 1024 will be truncated" do
     @p.msg = "space warp" * 1000
-    lambda {@p.to_s}.should.raise Syslog::SyslogError
+    @p.to_s.bytesize.should.equal 1024
   end
   
 end

@@ -14,8 +14,8 @@ module Syslog
         return "I AM A JUNK PACKET CUZ MY USER DIDNT SET ME"
       end
       data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@msg}"
-      if data.bytesize > 1024
-        raise SyslogError.new("Packet size may not exceed 1024 bytes")
+      while data.bytesize > 1024
+        data = data[0..(data.length-2)]
       end
       data
     end

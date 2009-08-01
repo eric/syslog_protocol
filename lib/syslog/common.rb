@@ -77,7 +77,5 @@ module Syslog
     6  => 'info',
     7  => 'debug'
   }
-  
-  class SyslogError < StandardError;end
-  
+    
 end
