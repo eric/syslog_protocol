@@ -1,3 +1,5 @@
+require File.expand_path('../helper', __FILE__)
+
 describe "syslog packet parser" do
   
   it "parse some valid packets" do
