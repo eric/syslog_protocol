@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
   ## Leave these as is they will be modified for you by the rake gemspec task.
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
-  s.name              = 'syslog_proto'
-  s.version           = '0.1.0'
+  s.name              = 'syslog_protocol'
+  s.version           = '0.9.0'
   s.date              = "2009-08-01"
-  # s.rubyforge_project = 'NAME'
+  # s.rubyforge_project = 'syslog_protocol'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   ## Specify any RDoc options here. You'll want to add your README and
   ## LICENSE files to the extra_rdoc_files list.
   s.rdoc_options = ["--charset=UTF-8"]
-  s.extra_rdoc_files = %w[README.md LICENSE]
+  s.extra_rdoc_files = %w[README.md]
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
@@ -58,7 +58,21 @@ Gem::Specification.new do |s|
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
-  s.files = %w[]
+  s.files = %w[
+    Gemfile
+    README.md
+    Rakefile
+    lib/syslog_protocol.rb
+    lib/syslog_protocol/common.rb
+    lib/syslog_protocol/logger.rb
+    lib/syslog_protocol/packet.rb
+    lib/syslog_protocol/parser.rb
+    syslog_protocol.gemspec
+    test/helper.rb
+    test/test_logger.rb
+    test/test_packet.rb
+    test/test_parser.rb
+  ]
   # = MANIFEST =
 
   ## Test files will be grabbed from the file list. Make sure the path glob
