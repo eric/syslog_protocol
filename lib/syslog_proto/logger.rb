@@ -1,24 +1,21 @@
 module SyslogProto
-
   class Logger
-    
-    def initialize(hostname, facility)
+    def initialize(hostname, tag, facility)
       @packet = Packet.new
       @packet.hostname = hostname
+      @packet.tag      = tag
       @packet.facility = facility
     end
     
     SEVERITIES.each do |k,v|
-      define_method(k) do |*args|
-        msg = args.shift
-        raise ArgumentError.new "MSG may not be omitted" unless msg and msg.length > 0
+      define_method(k) do |content|
+        raise ArgumentError.new("Message may not be omitted") unless content and content.length > 0
+
         p = @packet.dup
         p.severity = k
-        p.msg = msg
+        p.content = content
         p.assemble
       end
     end
-    
   end
-
 end

@@ -13,7 +13,7 @@ module SyslogProto
       packet.pri = 13
       packet.time = Time.now
       packet.hostname = origin || 'unknown'
-      packet.msg = original_msg
+      packet.content = original_msg
       return packet
     end
     time = parse_time(msg)
@@ -24,7 +24,13 @@ module SyslogProto
     end
     hostname = parse_hostname(msg)
     packet.hostname = hostname || origin
-    packet.msg = msg
+    if m = msg.match(/^(\w+)(: | )(.*)$/)
+      packet.tag = m[1]
+      packet.content = m[3]
+    else
+      packet.tag = 'unknown'
+      packet.content = msg
+    end
     packet
   end
   

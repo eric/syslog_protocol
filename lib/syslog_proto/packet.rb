@@ -1,19 +1,17 @@
 module SyslogProto
-
   class Packet
-
-    attr_reader :facility, :severity, :hostname
-    attr_accessor :time, :msg
+    attr_reader :facility, :severity, :hostname, :tag
+    attr_accessor :time, :content
         
     def to_s
       assemble
     end
 
     def assemble
-      unless @hostname and @facility and @severity
-        return "I AM A JUNK PACKET CUZ MY USER DIDNT SET ME"
+      unless @hostname and @facility and @severity and @tag
+        raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
-      data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@msg}"
+      data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
       while data.bytesize > 1024
         data = data[0..(data.length-2)]
       end
@@ -36,6 +34,23 @@ module SyslogProto
       else
         raise ArgumentError.new "Facility must be a designated number or string"
       end
+    end
+
+    def tag=(t)
+      unless t && t.is_a?(String) && t.length > 0
+        raise ArgumentError, "Tag must not be omitted"
+      end
+      if t.length > 32
+        raise ArgumentError, "Tag must not be longer than 32 characters"
+      end
+      if t =~ /\s/
+        raise ArgumentError, "Tag may not contain spaces"
+      end
+      if t =~ /[^\x21-\x7E]/
+        raise ArgumentError, "Tag may only contain ASCII characters 33-126"
+      end
+
+      @tag = t
     end
 
     def severity=(s)

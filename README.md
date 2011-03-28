@@ -12,7 +12,8 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
     p.hostname = "space_station"
     p.facility = "kern"
     p.severity = "warn"
-    p.msg = "flight control broken"
+    p.tag = "test"
+    p.content = "flight control broken"
     p.to_s
     # => "<4>Aug  1 14:01:17 space_station flight control broken"
     p.pri
@@ -51,7 +52,7 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
     # => "crit"
     p.time
     # => Sun Oct 11 22:14:15 -0700 2009
-    p.msg
+    p.content
     # => "space is really getting to me"
 
 

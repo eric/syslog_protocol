@@ -5,7 +5,7 @@ describe "a syslog packet" do
   @p = SyslogProto::Packet.new
   
   it "should embarrass a person who does not set the fields" do
-    @p.to_s.should.equal "I AM A JUNK PACKET CUZ MY USER DIDNT SET ME"
+    lambda { @p.to_s }.should.raise RuntimeError
   end
   
   it "hostname may not be omitted" do
@@ -18,6 +18,12 @@ describe "a syslog packet" do
     lambda {@p.hostname = "space_station"}.should.not.raise
   end
   
+  it 'tag may only contain ASCII characters 33-126 (no spaces!)' do
+    lambda {@p.tag = "linux box"}.should.raise ArgumentError
+    lambda {@p.tag = "\000" + "linuxbox"}.should.raise ArgumentError
+    lambda {@p.tag = "test"}.should.not.raise
+  end
+
   it "facility may only be set within 0-23 or with a proper string name" do
     lambda {@p.facility = 666}.should.raise ArgumentError
     lambda {@p.facility = "mir space station"}.should.raise ArgumentError
@@ -65,8 +71,8 @@ describe "a syslog packet" do
   end
   
   it "set a message, which apparently can be anything" do
-    @p.msg = "exploring ze black hole"
-    @p.msg.should.equal "exploring ze black hole"
+    @p.content = "exploring ze black hole"
+    @p.content.should.equal "exploring ze black hole"
   end
   
   it "timestamp must conform to the retarded format" do
@@ -75,11 +81,11 @@ describe "a syslog packet" do
   
   it "use the current time and assemble the packet" do
     timestamp = @p.generate_timestamp
-    @p.to_s.should.equal "<165>#{timestamp} space_station exploring ze black hole"
+    @p.to_s.should.equal "<165>#{timestamp} space_station test: exploring ze black hole"
   end
   
   it "packets larger than 1024 will be truncated" do
-    @p.msg = "space warp" * 1000
+    @p.content = "space warp" * 1000
     @p.to_s.bytesize.should.equal 1024
   end
   
