@@ -25,9 +25,9 @@ Gem::Specification.new do |s|
   ## List the primary authors. If there are a bunch of authors, it's probably
   ## better to set the email to an email list or something. If you don't have
   ## a custom homepage, consider using your GitHub URL or the like.
-  s.authors = ["Jake Douglas"]
-  s.email = "jakecdouglas@gmail.com"
-  s.homepage = 'http://github.com/jakedouglas/syslog'
+  s.authors = ["Jake Douglas", 'Eric Lindvall']
+  s.email = [ "jakecdouglas@gmail.com", 'eric@5stops.com' ]
+  s.homepage = 'https://github.com/eric/syslog_protocol'
 
   ## This gets added to the $LOAD_PATH so that 'lib/NAME.rb' can be required as
   ## require 'NAME.rb' or'/lib/NAME/file.rb' can be as require 'NAME/file.rb'
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   ## Specify any RDoc options here. You'll want to add your README and
   ## LICENSE files to the extra_rdoc_files list.
   s.rdoc_options = ["--charset=UTF-8"]
-  s.extra_rdoc_files = %w[README LICENSE]
+  s.extra_rdoc_files = %w[README.md LICENSE]
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.

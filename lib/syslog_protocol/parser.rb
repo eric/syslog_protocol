@@ -1,6 +1,6 @@
 require 'time'
 
-module SyslogProto
+module SyslogProtocol
   
   def self.parse(msg, origin=nil)
     packet = Packet.new

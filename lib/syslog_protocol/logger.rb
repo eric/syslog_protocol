@@ -1,4 +1,4 @@
-module SyslogProto
+module SyslogProtocol
   class Logger
     def initialize(hostname, tag, facility)
       @packet = Packet.new

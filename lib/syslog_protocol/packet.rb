@@ -1,4 +1,4 @@
-module SyslogProto
+module SyslogProtocol
   class Packet
     attr_reader :facility, :severity, :hostname, :tag
     attr_accessor :time, :content

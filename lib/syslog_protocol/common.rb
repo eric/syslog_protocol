@@ -1,5 +1,4 @@
-module SyslogProto
-  
+module SyslogProtocol
   # These hashes stolen from Syslog.pm
   
   FACILITIES = {
@@ -77,5 +76,4 @@ module SyslogProto
     6  => 'info',
     7  => 'debug'
   }
-    
 end

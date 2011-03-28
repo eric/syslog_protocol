@@ -6,9 +6,9 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
 
 ### Manipulate packets manually
 
-    require 'syslog_proto'
+    require 'syslog_protocol'
     
-    p = SyslogProto::Packet.new
+    p = SyslogProtocol::Packet.new
     p.hostname = "space_station"
     p.facility = "kern"
     p.severity = "warn"
@@ -32,9 +32,9 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
 
 ### Use a Logger to generate packets
 
-    require 'syslog_proto'
+    require 'syslog_protocol'
     
-    logger = SyslogProto::Logger.new("space_station", "uucp")
+    logger = SyslogProtocol::Logger.new("space_station", "uucp")
     logger.debug("looking for uucp on board the space station")
     # => "<67>Aug  1 14:02:29 space_station looking for uucp on board the space station"
     logger.emerg("omg we cant find uucp on the space station")
@@ -43,9 +43,9 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
 
 ### Parse packets
 
-    require 'syslog_proto'
+    require 'syslog_protocol'
     
-    p = SyslogProto.parse("<34>Oct 11 22:14:15 space_station space is really getting to me")
+    p = SyslogProtocol.parse("<34>Oct 11 22:14:15 space_station space is really getting to me")
     p.facility
     # => 4
     p.severity_name
@@ -58,7 +58,7 @@ roughly conforms to the murky shade of grey known as http://www.faqs.org/rfcs/rf
 
 ### It yells at you for trying to abuse the protocol
 
-    p = SyslogProto::Packet.new
+    p = SyslogProtocol::Packet.new
     p.facility = 34534534
     # => ArgumentError: Facility must be within 0-23
     p.hostname = "my host"
@@ -82,4 +82,3 @@ Good luck.
 ## TODO
 
 * Update to more closely map to the ruby `syslog` API where possible
-* Add support for "ident" (known as a "tag" in the RFC)
