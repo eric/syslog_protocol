@@ -12,9 +12,16 @@ module SyslogProtocol
         raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
       data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
-      while data.bytesize > 1024
-        data = data[0..(data.length-2)]
+
+      if data.bytesize > 1024
+        shortened = data.unpack('c*')[0..1023].pack('c*')
+        re_encoded = shortened.force_encoding(data.encoding)
+        while !re_encoded.valid_encoding? && data.valid_encoding? # multi byte char truncation
+          re_encoded = re_encoded[0..(re_encoded.length - 2)]
+        end
+        data = re_encoded
       end
+
       data
     end
     
