@@ -4,5 +4,5 @@ require 'syslog_protocol/logger'
 require 'syslog_protocol/parser'
 
 module SyslogProtocol
-  VERSION = '0.9.0'
+  VERSION = '0.9.1'
 end
