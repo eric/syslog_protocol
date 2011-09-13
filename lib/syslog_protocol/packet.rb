@@ -2,7 +2,7 @@ module SyslogProtocol
   class Packet
     attr_reader :facility, :severity, :hostname, :tag
     attr_accessor :time, :content
-        
+
     def to_s
       assemble
     end
@@ -12,12 +12,17 @@ module SyslogProtocol
         raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
       data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
-      while data.bytesize > 1024
-        data = data[0..(data.length-2)]
+
+      if string_bytesize(data) > 1024
+        data = data.slice(0, 1024)
+        while string_bytesize(data) > 1024
+          data = data.slice(0, data.length - 1)
+        end
       end
+
       data
     end
-    
+
     def facility=(f)
       if f.is_a? Integer
         if (0..23).include?(f)
@@ -103,7 +108,7 @@ module SyslogProtocol
       @facility = p / 8
       @severity = p - (@facility * 8)
     end
-    
+
     def generate_timestamp
       time = @time || Time.now
       # The timestamp format requires that a day with fewer than 2 digits have
@@ -112,11 +117,19 @@ module SyslogProtocol
       day = day.sub(/^0/, ' ') if day =~ /^0\d/
       time.strftime("%b #{day} %H:%M:%S")
     end
-    
-    SEVERITIES.each do |k,v|
-      define_method("#{k}?") {SEVERITIES[k] == @severity}
-    end
-    
-  end
 
+    if "".respond_to?(:bytesize)
+      def string_bytesize(string)
+        string.bytesize
+      end
+    else
+      def string_bytesize(string)
+        string.length
+      end
+    end
+
+    SEVERITIES.each do |k,v|
+      define_method("#{k}?") { SEVERITIES[k] == @severity }
+    end
+  end
 end
