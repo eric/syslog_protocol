@@ -7,15 +7,15 @@ module SyslogProtocol
       assemble
     end
 
-    def assemble
+    def assemble(max_size = 1024)
       unless @hostname and @facility and @severity and @tag
         raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
       data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
 
-      if string_bytesize(data) > 1024
-        data = data.slice(0, 1024)
-        while string_bytesize(data) > 1024
+      if string_bytesize(data) > max_size
+        data = data.slice(0, max_size)
+        while string_bytesize(data) > max_size
           data = data.slice(0, data.length - 1)
         end
       end
