@@ -85,7 +85,7 @@ Good luck.
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Jake Douglass and Eric Lindvall
+Copyright (c) 2013 Jake Douglas and Eric Lindvall
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
