@@ -22,6 +22,17 @@ describe "syslog packet parser" do
     p.time.should.equal Time.parse("Feb  5 17:32:18")
   end
 
+  it "parse packet with space between date and pri" do
+    p = SyslogProtocol.parse("<14> Jun 15 14:25:39 127.0.0.1 mgr:  SME TELNET from 127.0.0.1 - MANAGER Mode")
+    p.facility.should.equal 1
+    p.severity.should.equal 6
+    p.pri.should.equal 14
+    p.hostname.should.equal "127.0.0.1"
+    p.tag.should.equal 'mgr'
+    p.content.should.equal " SME TELNET from 127.0.0.1 - MANAGER Mode"
+    p.time.should.equal Time.parse("Jun 15 14:25:39")
+  end
+
   it "treat a packet with no valid PRI as all content, setting defaults" do
     p = SyslogProtocol.parse("nomnom")
     p.facility.should.equal 1
