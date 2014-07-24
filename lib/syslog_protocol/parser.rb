@@ -1,7 +1,7 @@
 require 'time'
 
 module SyslogProtocol
-  
+
   def self.parse(msg, origin=nil)
     packet = Packet.new
     original_msg = msg.dup
@@ -33,9 +33,9 @@ module SyslogProtocol
     end
     packet
   end
-  
+
   private
-  
+
   def self.parse_pri(msg)
     pri = msg.slice!(/<(\d\d?\d?)>/)
     pri = pri.slice(/\d\d?\d?/) if pri
@@ -45,13 +45,12 @@ module SyslogProtocol
       return pri
     end
   end
-  
+
   def self.parse_time(msg)
     msg.slice!(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\s|[1-9])\d\s\d\d:\d\d:\d\d\s/)
   end
-  
+
   def self.parse_hostname(msg)
-    msg.slice!(/^[\x21-\x7E]+\s/).rstrip
+    msg.slice!(/^\s*[\x21-\x7E]+\s/).strip
   end
-  
 end
