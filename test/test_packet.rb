@@ -81,7 +81,7 @@ describe "a syslog packet" do
 
   it "use the current time and assemble the packet" do
     timestamp = @p.generate_timestamp
-    @p.to_s.should.equal "<165>#{timestamp} space_station test: exploring ze black hole"
+    @p.to_s.should.equal "<165>#{timestamp} space_station test: exploring ze black hole\n"
   end
 
   it "packets larger than 1024 will be truncated" do
