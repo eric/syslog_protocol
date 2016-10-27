@@ -1,21 +1,31 @@
 module SyslogProtocol
   class Packet
     attr_reader :facility, :severity, :hostname, :tag
-    attr_accessor :time, :content
+    attr_accessor :time, :content, :max_tag_size, :max_msg_size
+
+    def initialize
+      @max_tag_size = 32
+      @max_msg_size = 1024
+    end
 
     def to_s
       assemble
     end
 
-    def assemble(max_size = 1024)
+    def assemble(max_msg_size_override)
+      @max_msg_size = max_msg_size_override
+      assemble
+    end
+
+    def assemble
       unless @hostname and @facility and @severity and @tag
         raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
       data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
 
-      if string_bytesize(data) > max_size
-        data = data.slice(0, max_size)
-        while string_bytesize(data) > max_size
+      if string_bytesize(data) > @max_msg_size
+        data = data.slice(0, @max_msg_size)
+        while string_bytesize(data) > @max_msg_size
           data = data.slice(0, data.length - 1)
         end
       end
@@ -45,8 +55,8 @@ module SyslogProtocol
       unless t && t.is_a?(String) && t.length > 0
         raise ArgumentError, "Tag must not be omitted"
       end
-      if t.length > 32
-        raise ArgumentError, "Tag must not be longer than 32 characters"
+      if t.length > @max_tag_size
+        raise ArgumentError, "Tag must not be longer than #{@max_tag_size} characters"
       end
       if t =~ /\s/
         raise ArgumentError, "Tag may not contain spaces"
