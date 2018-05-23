@@ -1,6 +1,6 @@
 module SyslogProtocol
   # These hashes stolen from Syslog.pm
-  
+
   FACILITIES = {
     'kern'     => 0,
     'user'     => 1,
@@ -27,7 +27,7 @@ module SyslogProtocol
     'local6'   => 22,
     'local7'   => 23
   }
-  
+
   FACILITY_INDEX = {
     0   => 'kern',
     1   => 'user',
@@ -54,7 +54,7 @@ module SyslogProtocol
     22  => 'local6',
     23  => 'local7'
   }
-  
+
   SEVERITIES = {
     'emerg'   => 0,
     'alert'   => 1,
@@ -63,9 +63,13 @@ module SyslogProtocol
     'warn'    => 4,
     'notice'  => 5,
     'info'    => 6,
-    'debug'   => 7 
+    'debug'   => 7,
+    'I'       => 6,
+    'W'       => 4,
+    'E'       => 3,
+    'F'       => 0
   }
-  
+
   SEVERITY_INDEX = {
     0  => 'emerg',
     1  => 'alert',
