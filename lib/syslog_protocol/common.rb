@@ -54,18 +54,22 @@ module SyslogProtocol
     22  => 'local6',
     23  => 'local7'
   }
-  
+
   SEVERITIES = {
     'emerg'   => 0,
+    'emergency' => 0,
     'alert'   => 1,
     'crit'    => 2,
+    'critical' => 2,
     'err'     => 3,
+    'error'   => 3,
     'warn'    => 4,
+    'warning' => 4,
     'notice'  => 5,
     'info'    => 6,
-    'debug'   => 7 
+    'debug'   => 7
   }
-  
+
   SEVERITY_INDEX = {
     0  => 'emerg',
     1  => 'alert',
@@ -76,4 +80,6 @@ module SyslogProtocol
     6  => 'info',
     7  => 'debug'
   }
+
 end
+

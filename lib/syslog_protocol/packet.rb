@@ -3,6 +3,12 @@ module SyslogProtocol
     attr_reader :facility, :severity, :hostname, :tag
     attr_accessor :time, :content
 
+    def initialize()
+      super()
+      @hostname = nil
+      @time = nil
+    end
+
     def to_s
       assemble
     end
@@ -11,7 +17,9 @@ module SyslogProtocol
       unless @hostname and @facility and @severity and @tag
         raise "Could not assemble packet without hostname, tag, facility, and severity"
       end
-      data = "<#{pri}>#{generate_timestamp} #{@hostname} #{@tag}: #{@content}"
+
+      fmt = "<%s>%s %s %s: %s"
+      data = fmt % [pri, generate_timestamp, @hostname, @tag, @content]
 
       if string_bytesize(data) > max_size
         data = data.slice(0, max_size)
@@ -98,7 +106,7 @@ module SyslogProtocol
     end
 
     def pri
-      (@facility * 8) + @severity
+      (@facility << 3) | @severity
     end
 
     def pri=(p)
@@ -116,6 +124,15 @@ module SyslogProtocol
       day = time.strftime("%d")
       day = day.sub(/^0/, ' ') if day =~ /^0\d/
       time.strftime("%b #{day} %H:%M:%S")
+    end
+
+    private
+    def format_field(text, max_length)
+      if text
+        text[0, max_length].gsub(/\s+/, '')
+      else
+        '-'
+      end
     end
 
     if "".respond_to?(:bytesize)
