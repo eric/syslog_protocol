@@ -1,8 +1,8 @@
 require File.expand_path('../helper', __FILE__)
 
-describe "a syslog packet" do
+describe "a syslog 5424 format message packet" do
 
-  @p = SyslogProtocol::Packet.new
+  @p = SyslogProtocol::SyslogRfc5424Packet.new
 
   it "should embarrass a person who does not set the fields" do
     lambda { @p.to_s }.should.raise RuntimeError
@@ -69,15 +69,6 @@ describe "a syslog packet" do
     @p.content.should.equal "exploring ze black hole"
   end
 
-  it "timestamp must conform to the retarded format" do
-    @p.generate_timestamp.should.match /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\s|[1-9])\d\s\d\d:\d\d:\d\d/
-  end
-
-  it "use the current time and assemble the packet" do
-    timestamp = @p.generate_timestamp
-    @p.to_s.should.equal "<165>#{timestamp} space_station test: exploring ze black hole"
-  end
-
   it "packets larger than 1024 will be truncated" do
     @p.content = "space warp" * 1000
     if "".respond_to?(:bytesize)
@@ -85,6 +76,24 @@ describe "a syslog packet" do
     else
       @p.to_s.size.should.equal 1024
     end
+  end
+
+  it "use the current time and assemble the packet" do
+    @p.hostname = "127.0.0.1"
+    @p.msgid = "1234567"
+    @p.procid = "erlang"
+    @p.appname = "fluentd"
+    @p.content = "message is sent"
+    @p.time = @p.generate_timestamp
+    @p.structured_data = {"test@xxxxx" => { "kube-namespace" => "test", "pod_name" => "test-0", "container_name" => "test"}}
+    expected_string = "<#{@p.pri}>1 #{@p.time} #{@p.hostname} #{@p.appname} #{@p.procid} #{@p.msgid} [test@xxxxx kube-namespace=\"test\" pod_name=\"test-0\" container_name=\"test\"] #{@p.content}"
+    @p.to_s.should.equal expected_string
+  end
+
+  it "truncate sd-param to 32 bytes per RFC-5424 says" do
+    @p.structured_data = {"test@xxxxx" => { "statefulset-kubernetes-iopod-name" => "test", "pod_name" => "test-0"}}
+    expected_string = "<#{@p.pri}>1 #{@p.time} #{@p.hostname} #{@p.appname} #{@p.procid} #{@p.msgid} [test@xxxxx statefulset-kubernetes-iopod-nam=\"test\" pod_name=\"test-0\"] #{@p.content}"
+    @p.to_s.should.equal expected_string
   end
 
 end

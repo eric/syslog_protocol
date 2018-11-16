@@ -67,11 +67,15 @@ Gem::Specification.new do |s|
     lib/syslog_protocol/logger.rb
     lib/syslog_protocol/packet.rb
     lib/syslog_protocol/parser.rb
+    lib/syslogrfc5424packet.rb
+    lib/syslogrfc5424parser.rb
     syslog_protocol.gemspec
     test/helper.rb
     test/test_logger.rb
     test/test_packet.rb
     test/test_parser.rb
+    test/test_syslogrfc5424packet.rb
+    test/test_syslogrfc5424parser.rb
   ]
   # = MANIFEST =
 
